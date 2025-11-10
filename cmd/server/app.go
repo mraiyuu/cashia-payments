@@ -3,7 +3,7 @@ package server
 import (
 	"errors"
 	"fmt"
-	"io"
+	// "io"
 	"net/http"
 	"os"
 
@@ -17,14 +17,11 @@ func StartServer() {
 	r.Use(chimiddleware.RealIP)
 	r.Use(chimiddleware.Logger)
 	r.Use(chimiddleware.Recoverer)
+	r.Use(chimiddleware.Heartbeat("/"))
 
 	port := ":8000"
 
 	fmt.Printf("server running on port %s\n", port)
-
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "server running")
-	})
 
 	//register routes
 	routes.RegisterAuthRoutes(r)
